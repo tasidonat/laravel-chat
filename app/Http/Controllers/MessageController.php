@@ -22,6 +22,6 @@ class MessageController extends Controller
         $message->user_id = $request->input('user');
         $message->save();
 
-        event(new MessagePosted($message, $message->user));
+        broadcast(new MessagePosted($message, $message->user))->toOthers();
     }
 }
