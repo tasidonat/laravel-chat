@@ -109,13 +109,13 @@ const ChatLayout = ({ children }) => {
                         </button>
                     </div>
                 </div>
-                <div className="p-3">
+                <div className="p-3 overflow-auto">
                     <TextInput 
                         onKeyUp={onSearch}
                         placeholder="Filter users and groups"
                         className="w-full"
                     />
-                    <div className="flex-1 overflow-auto">
+                    <div className="flex-1">
                         {sortedConversations && sortedConversations.map((conversation) => 
                             <ConversationItem 
                                 key={`${conversation.is_group ? "group_" : "user_"}${conversation.id}`}
