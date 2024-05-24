@@ -21,16 +21,11 @@ class StoreRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'message' => 'required',
-            'user' => 'required|exists:users,id'
-        ];
+        return [];
     }
 
     public function messages()
     {
-        return [
-            'required' => 'The :attribute is required',
-        ];
+        return [];
     }
 }

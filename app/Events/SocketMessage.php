@@ -2,8 +2,8 @@
 
 namespace App\Events;
 
+use App\Http\Resources\MessageResource;
 use App\Models\Message;
-use App\Models\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -12,31 +12,23 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class MessagePosted implements ShouldBroadcast
+class SocketMessage
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-
-    /***
-     * Message
-     * 
-     * @var Message
-     */
-    public $message;
-
-    /***
-     * User
-     * 
-     * @var User
-     */
-    public $user;
 
     /**
      * Create a new event instance.
      */
-    public function __construct(Message $message, User $user)
+    public function __construct(public Message $message)
     {
-        $this->message = $message;
-        $this->user = $user;
+        //
+    }
+
+    public function broadcastWith():array
+    {
+        return [
+            'message' => new MessageResource($this->message),
+        ];
     }
 
     /**
@@ -46,8 +38,15 @@ class MessagePosted implements ShouldBroadcast
      */
     public function broadcastOn(): array
     {
-        return [
-            new PresenceChannel('chatroom'),
-        ];
+        $m = $this->message;
+        $channels = [];
+
+        if($m->group_id) {
+            $channels[] = new PrivateChannel('message.group.' . $m->group_id);
+        } else {
+            $channels[] = new PrivateChannel('message.user.' . collect([$m->sender_id, $m->receiver_id])->sort()->implode('-'));
+        }
+
+        return $channels;
     }
 }
