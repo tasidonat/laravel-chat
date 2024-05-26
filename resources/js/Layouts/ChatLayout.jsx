@@ -14,10 +14,6 @@ const ChatLayout = ({ children }) => {
 
     const isUserOnline = (userId) => onlineUsers[userId];
 
-    console.log("conversations", conversations);
-    console.log("selectedConversation", selectedConversation);
-    console.log("sortedConversations", sortedConversations)
-
     const onSearch = (e) => {
         const search = e.target.value.toLowerCase();
         setLocalConversations(

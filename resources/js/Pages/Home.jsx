@@ -13,6 +13,12 @@ function Home({ selectedConversation, messages }) {
     const messagesCtrRef = useRef(null);
 
     useEffect(() => {
+        setTimeout(() => {
+            messagesCtrRef.current.scrollTop = messagesCtrRef.current.scrollHeight;
+        }, 10);
+    }, [selectedConversation])
+
+    useEffect(() => {
         setLocalMessages(messages ? messages.data.reverse() : []);
     }, [messages])
 
