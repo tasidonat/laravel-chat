@@ -27,7 +27,7 @@ class MessageController extends Controller
 
         return inertia('Home', [
             'selectedConversation' => $user->toConversationArray(),
-            'message' => MessageResource::collection($message),
+            'messages' => MessageResource::collection($message),
         ]);
     }
 
