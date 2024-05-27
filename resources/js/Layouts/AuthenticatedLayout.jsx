@@ -5,12 +5,14 @@ import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link, usePage } from '@inertiajs/react';
 import { useEffect } from 'react';
+import { useEventBus } from '@/EventBus';
 
 export default function Authenticated({ header, children }) {
     const page = usePage();
     const user = page.props.auth.user;
     const conversations = page.props.conversations;
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
+    const {emit} = useEventBus();
 
     useEffect(() => {
         conversations.forEach((conversation) => {
