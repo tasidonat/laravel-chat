@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\SocketMessage;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Message\StoreRequest;
+use App\Http\Requests\MessageStoreRequest;
 use App\Http\Resources\MessageResource;
 use App\Models\Conversation;
 use App\Models\Group;
@@ -65,9 +66,10 @@ class MessageController extends Controller
         return MessageResource::collection($messages);
     }
 
-    public function store(StoreRequest $request)
+    public function store(MessageStoreRequest $request)
     {
-        $data = $request->validate();
+        $data = $request->validated();
+
         $data['sender_id'] = auth()->id();
         $receiverId = $data['receiver_id'] ?? null;
         $groupId = $data['group_id'] ?? null;
