@@ -117,5 +117,5 @@ export const formatBytes = (bytes, decimal = 2) => {
         i++;
     }
 
-    return `${parseFloat(size.toFixed(dm))} ${size[i]}`
+    return `${parseFloat(size.toFixed(dm))} ${sizes[i]}`
 }

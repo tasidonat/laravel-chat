@@ -25,6 +25,8 @@ const MessageInput = ({ conversation = null }) => {
             };
         });
 
+        e.target.value = null;
+
         setChosenFiles((prevFiles) => {
             return [...prevFiles, ...updatedFiles];
         });
@@ -34,7 +36,7 @@ const MessageInput = ({ conversation = null }) => {
         if(messageSending) {
             return;
         }
-        if(newMessage.trim() === "") {
+        if(newMessage.trim() === "" && chosenFiles.length === 0) {
             setInputErrorMessage("Please provid a message or upload an attachment.");
 
             setTimeout(() => {
@@ -151,7 +153,7 @@ const MessageInput = ({ conversation = null }) => {
                                 onClick={() => {
                                     setChosenFiles(chosenFiles.filter((f) => f.file.name !== file.file.name))
                                 }}
-                                className="absolute w-6 h-6 rounded-full bg-gray-800 -right-top-2 text-gray-300 hover:text-gray-100 z-10"
+                                className="absolute w-6 h-6 rounded-full bg-gray-800 -right-2 -top-2 text-gray-300 hover:text-gray-100 z-10"
                             >
                                 <XCircleIcon className="w-6" />
                             </button>

@@ -87,7 +87,7 @@ class MessageController extends Controller
                 $model = [
                     'message_id' => $message->id,
                     'name' => $file->getClientOriginalName(),
-                    'mime' => $file->getClientOriginalMime(),
+                    'mime' => $file->getClientMimeType(),
                     'size' => $file->getSize(),
                     'path' => $file->store($directory, 'public'),
                 ];

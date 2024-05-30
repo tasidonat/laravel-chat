@@ -63,7 +63,7 @@ function Home({ selectedConversation, messages }) {
             ind,
         });
 
-        showAttachmentPreview(true);
+        setShowAttachmentPreview(true);
     };
 
     useEffect(() => {
@@ -149,6 +149,7 @@ function Home({ selectedConversation, messages }) {
                                     <MessageItem 
                                         key={message.id}
                                         message={message}
+                                        attachmentClick={onAttachmentClick}
                                     />
                                 ))}
                             </div>
