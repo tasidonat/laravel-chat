@@ -6,13 +6,13 @@ import { Fragment, useEffect, useMemo, useState } from "react";
 const AttachmentPreviewModal = ({ attachments, index, show=false, onClose=() => {} }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    const attachmet = useMemo(() => {
-        return attachments[currentIndex];
-    }, [attachments, currentIndex]);
-
     const previewableAttachmets = useMemo(() => {
         return attachments.filter((attachment) => isPreviewable(attachment));
     }, [attachments]);
+    
+    const attachmet = useMemo(() => {
+        return previewableAttachmets[currentIndex];
+    }, [attachments, currentIndex]);
 
     const close = () => {
         onClose();
