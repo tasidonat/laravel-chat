@@ -56,7 +56,7 @@ const ConversationItem = ({
                 </p>
             )}
         </div>
-        {currentUser.is_admin && conversation.is_user && (
+        {!!(currentUser.is_admin && conversation.is_user) && (
             <UserOptionsDropdown conversation={conversation} />
         )}
     </Link>
