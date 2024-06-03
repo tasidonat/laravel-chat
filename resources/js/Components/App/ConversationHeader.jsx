@@ -20,7 +20,7 @@ const ConvesationHeader = ({ selectedConversation }) => {
 
         axios.delete(route("group.destroy", selectedConversation.id))
             .then((response) => {
-                console.log(response);
+                emit("toast.show", response.data.message);
             }).catch((error) => {
                 console.log(error);
             });

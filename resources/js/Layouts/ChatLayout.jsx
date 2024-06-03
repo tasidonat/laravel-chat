@@ -1,5 +1,5 @@
 import TextInput from "@/Components/TextInput";
-import { usePage } from "@inertiajs/react";
+import { router, usePage } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 import { PencilSquareIcon } from '@heroicons/react/24/solid'
 import ConversationItem from "@/Components/App/ConversationItem";
@@ -14,7 +14,7 @@ const ChatLayout = ({ children }) => {
     const [sortedConversations, setSortedConversation] = useState([]);
     const [onlineUsers, setOnlineUsers] = useState({});
     const [showGroupModal, setShowGroupModal] = useState(false);
-    const { on } = useEventBus();
+    const { on, emit } = useEventBus();
 
     const isUserOnline = (userId) => onlineUsers[userId];
 
@@ -59,11 +59,23 @@ const ChatLayout = ({ children }) => {
         const offCreated = on("message.created", messageCreated);
         const offDeleted = on("message.deleted", messageDeleted);
         const offModalShow = on("GroupModal.show", (group) => {setShowGroupModal(true)});
+        const offGroupDelete = on("group.deleted", ({id, name}) => {
+            setLocalConversations((oldConversations) => {
+                return oldConversations.filter((conversation) => conversation.id !== id)
+            });
+            
+            emit('toast.show', `Group ${name} was delete`, 'error');
+
+            if(!selectedConversation || (selectedConversation.is_group && selectedConversation.id == id)) {
+                router.visit(route("dashboard"));
+            }
+        });
 
         return () => {
             offCreated();
             offDeleted();
             offModalShow();
+            offGroupDelete();
         };
     }, [on]);
 

@@ -29,7 +29,7 @@ const GroupModal = ({ show = false, onClose = () => {} }) => {
         e.preventDefault();
 
         if(group.id) {
-            put(route("group.update", group_id), {
+            put(route("group.update", group.id), {
                 onSuccess: () => {
                     closeModal();
                     emit("toast.show", `Group "${data.name}" was updated`);

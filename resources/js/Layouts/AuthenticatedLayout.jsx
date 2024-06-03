@@ -46,6 +46,16 @@ export default function Authenticated({ header, children }) {
                         message: message.message || `Shared ${message.attachments.length === 1 ? "an attachment" : message.attachments.length + " attachments"}`,
                     });
                 });
+
+            if(conversation.is_group) {
+                Echo.private(`group.deleted.${conversation.id}`)
+                    .listen("GroupDeleted", (e) => {
+                        emit("group.deleted", { id: e.id, name: e.name });
+                    })
+                    .error((e) => {
+                        console.error(e);
+                    })
+            }
         });
 
         return () => {
@@ -60,6 +70,10 @@ export default function Authenticated({ header, children }) {
                 }
 
                 Echo.leave(channel);
+
+                if(conversation.id_group) {
+                    Echo.leave(`group.deleted.${conversation.id}`);
+                }
             });
         };
     }, [conversations]);
