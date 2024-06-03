@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { PencilSquareIcon } from '@heroicons/react/24/solid'
 import ConversationItem from "@/Components/App/ConversationItem";
 import { useEventBus } from "@/EventBus";
+import GroupModal from "@/Components/App/GroupModal";
 
 const ChatLayout = ({ children }) => {
     const page = usePage();
@@ -12,6 +13,7 @@ const ChatLayout = ({ children }) => {
     const [localConversations, setLocalConversations] = useState([]);
     const [sortedConversations, setSortedConversation] = useState([]);
     const [onlineUsers, setOnlineUsers] = useState({});
+    const [showGroupModal, setShowGroupModal] = useState(false);
     const { on } = useEventBus();
 
     const isUserOnline = (userId) => onlineUsers[userId];
@@ -56,10 +58,12 @@ const ChatLayout = ({ children }) => {
     useEffect(() => {
         const offCreated = on("message.created", messageCreated);
         const offDeleted = on("message.deleted", messageDeleted);
+        const offModalShow = on("GroupModal.show", (group) => {setShowGroupModal(true)});
 
         return () => {
             offCreated();
             offDeleted();
+            offModalShow();
         };
     }, [on]);
 
@@ -140,6 +144,7 @@ const ChatLayout = ({ children }) => {
                     >
                         <button
                             className="text-gray-400 hover:text-gray-200"
+                            onClick={(e) => setShowGroupModal(true)}
                         >
                             <PencilSquareIcon className="w-4 h-4 inline-block ml-2" />
                         </button>
@@ -167,6 +172,7 @@ const ChatLayout = ({ children }) => {
                 {children}
             </div>
         </div>
+        <GroupModal show={showGroupModal} onClose={() => setShowGroupModal(false)} />
     </>
 }
 

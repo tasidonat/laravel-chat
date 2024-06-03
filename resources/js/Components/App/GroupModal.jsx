@@ -45,7 +45,7 @@ const GroupModal = ({ show = false, onClose = () => {} }) => {
         });
     };
 
-    closeModal = () => {
+    const closeModal = () => {
         reset();
         onClose();
     };

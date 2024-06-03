@@ -9,6 +9,8 @@ import axios from "axios";
 
 
 const ConvesationHeader = ({ selectedConversation }) => {
+    const page = usePage();
+    const authUser = page.props.auth.user;
     const {emit} = useEventBus();
 
     const onDeleteGroup = () => {
